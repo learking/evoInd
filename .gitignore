@@ -54,3 +54,4 @@ build/**/*
 # Eclipse project file #
 ########################
 .project
+/bin
