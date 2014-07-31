@@ -5,6 +5,7 @@ import beast.core.Input.Validate;
 import beast.core.parameter.RealParameter;
 import beast.evolution.datatype.Codon;
 import beast.evolution.datatype.DataType;
+import beast.evolution.datatype.UserDataType;
 import beast.evolution.substitutionmodel.Frequencies;
 import beast.evolution.substitutionmodel.GeneralSubstitutionModel;
 
@@ -368,7 +369,7 @@ public class YN98 extends GeneralSubstitutionModel {
     void setupDiagMatrix(){
     	//0:A 1:C 2:G 3:T
     	double[] nucleoFreqs = nucleoFrequencies.getFreqs();
-
+    	
     	//example:
     	diagMatrix[0] = nucleoFreqs[0] * nucleoFreqs[0] * nucleoFreqs[0]; // AAA
     	diagMatrix[1] = nucleoFreqs[0] * nucleoFreqs[0] * nucleoFreqs[1]; // AAC
@@ -434,6 +435,9 @@ public class YN98 extends GeneralSubstitutionModel {
     }
     
     @Override
+    protected void setupRelativeRates() {}
+    
+    @Override
     protected void setupRateMatrix() {
     	setupSymmMatrix();
     	setupDiagMatrix();
@@ -474,7 +478,35 @@ public class YN98 extends GeneralSubstitutionModel {
         if (dataType instanceof Codon) {
             return true;
         }
+        if (dataType instanceof UserDataType) {
+        	if (dataType.getStateCount() == 61){
+        		return true;
+        	}
+        }
         throw new Exception("Can only handle codon data");
     }
     
+    /***************************************************************************************/
+    //for testing purpose, need to be disabled after testing
+    /***************************************************************************************/    
+    /**
+     * access to (copy of) rate matrix *
+     */
+    @Override
+    public double[][] getRateMatrix() {
+        return rateMatrix.clone();
+    }
+    
+    public double[][] getSymmMatrix() {
+        return symmMatrix.clone();
+    }
+    
+    public void prepareMatricesForTest(){
+        setupRelativeRates();
+        setupRateMatrix();
+    }
+    
+    public double[] getDiagMatrix() {
+        return diagMatrix.clone();
+    }
 }
