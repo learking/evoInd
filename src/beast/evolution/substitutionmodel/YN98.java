@@ -79,6 +79,85 @@ public class YN98 extends GeneralSubstitutionModel {
         //rateGT = getParameter(rateGTInput);
     }
     
+    @Override
+    public double[] getFrequencies() {
+    	//this function should return stationary (should use up-to-date frequencies)
+    	// in YN98 case: pi_j1 * pi_j2 * pi_j3 / (1 - P(stop codon 1) - P(stop codon 2) - P(stop codon 3))
+    	double [] codonFreqs = new double[nrOfStates];
+    	//can we compute codonFreqs from diagMatrix?
+    	
+    	//0:A 1:C 2:G 3:T
+    	double[] nucleoFreqs = nucleoFrequencies.getFreqs();
+    	
+    	//total probability without stop codons
+    	double totalProb = 1.0 - nucleoFreqs[3] * nucleoFreqs[0] * nucleoFreqs[0] - nucleoFreqs[3] * nucleoFreqs[0] * nucleoFreqs[2] - nucleoFreqs[3] * nucleoFreqs[2] * nucleoFreqs[0];
+
+    	//example:
+    	codonFreqs[0] = nucleoFreqs[0] * nucleoFreqs[0] * nucleoFreqs[0] / totalProb; // AAA
+    	codonFreqs[1] = nucleoFreqs[0] * nucleoFreqs[0] * nucleoFreqs[1] / totalProb; // AAC
+    	codonFreqs[2] = nucleoFreqs[0] * nucleoFreqs[0] * nucleoFreqs[2] / totalProb; // AAG
+    	codonFreqs[3] = nucleoFreqs[0] * nucleoFreqs[0] * nucleoFreqs[3] / totalProb; // AAT
+    	codonFreqs[4] = nucleoFreqs[0] * nucleoFreqs[1] * nucleoFreqs[0] / totalProb; // ACA
+    	codonFreqs[5] = nucleoFreqs[0] * nucleoFreqs[1] * nucleoFreqs[1] / totalProb; // ACC
+    	codonFreqs[6] = nucleoFreqs[0] * nucleoFreqs[1] * nucleoFreqs[2] / totalProb; // ACG
+    	codonFreqs[7] = nucleoFreqs[0] * nucleoFreqs[1] * nucleoFreqs[3] / totalProb; // ACT
+    	codonFreqs[8] = nucleoFreqs[0] * nucleoFreqs[2] * nucleoFreqs[0] / totalProb; // AGA
+    	codonFreqs[9] = nucleoFreqs[0] * nucleoFreqs[2] * nucleoFreqs[1] / totalProb; // AGC
+    	codonFreqs[10] = nucleoFreqs[0] * nucleoFreqs[2] * nucleoFreqs[2] / totalProb; // AGG
+    	codonFreqs[11] = nucleoFreqs[0] * nucleoFreqs[2] * nucleoFreqs[3] / totalProb; // AGT
+    	codonFreqs[12] = nucleoFreqs[0] * nucleoFreqs[3] * nucleoFreqs[0] / totalProb; // ATA
+    	codonFreqs[13] = nucleoFreqs[0] * nucleoFreqs[3] * nucleoFreqs[1] / totalProb; // ATC
+    	codonFreqs[14] = nucleoFreqs[0] * nucleoFreqs[3] * nucleoFreqs[2] / totalProb; // ATG
+    	codonFreqs[15] = nucleoFreqs[0] * nucleoFreqs[3] * nucleoFreqs[3] / totalProb; // ATT
+    	codonFreqs[16] = nucleoFreqs[1] * nucleoFreqs[0] * nucleoFreqs[0] / totalProb; // CAA
+    	codonFreqs[17] = nucleoFreqs[1] * nucleoFreqs[0] * nucleoFreqs[1] / totalProb; // CAC
+    	codonFreqs[18] = nucleoFreqs[1] * nucleoFreqs[0] * nucleoFreqs[2] / totalProb; // CAG
+    	codonFreqs[19] = nucleoFreqs[1] * nucleoFreqs[0] * nucleoFreqs[3] / totalProb; // CAT
+    	codonFreqs[20] = nucleoFreqs[1] * nucleoFreqs[1] * nucleoFreqs[0] / totalProb; // CCA
+    	codonFreqs[21] = nucleoFreqs[1] * nucleoFreqs[1] * nucleoFreqs[1] / totalProb; // CCC
+    	codonFreqs[22] = nucleoFreqs[1] * nucleoFreqs[1] * nucleoFreqs[2] / totalProb; // CCG
+    	codonFreqs[23] = nucleoFreqs[1] * nucleoFreqs[1] * nucleoFreqs[3] / totalProb; // CCT
+    	codonFreqs[24] = nucleoFreqs[1] * nucleoFreqs[2] * nucleoFreqs[0] / totalProb; // CGA
+    	codonFreqs[25] = nucleoFreqs[1] * nucleoFreqs[2] * nucleoFreqs[1] / totalProb; // CGC
+    	codonFreqs[26] = nucleoFreqs[1] * nucleoFreqs[2] * nucleoFreqs[2] / totalProb; // CGG
+    	codonFreqs[27] = nucleoFreqs[1] * nucleoFreqs[2] * nucleoFreqs[3] / totalProb; // CGT
+    	codonFreqs[28] = nucleoFreqs[1] * nucleoFreqs[3] * nucleoFreqs[0] / totalProb; // CTA
+    	codonFreqs[29] = nucleoFreqs[1] * nucleoFreqs[3] * nucleoFreqs[1] / totalProb; // CTC
+    	codonFreqs[30] = nucleoFreqs[1] * nucleoFreqs[3] * nucleoFreqs[2] / totalProb; // CTG
+    	codonFreqs[31] = nucleoFreqs[1] * nucleoFreqs[3] * nucleoFreqs[3] / totalProb; // CTT
+    	codonFreqs[32] = nucleoFreqs[2] * nucleoFreqs[0] * nucleoFreqs[0] / totalProb; // GAA
+    	codonFreqs[33] = nucleoFreqs[2] * nucleoFreqs[0] * nucleoFreqs[1] / totalProb; // GAC
+    	codonFreqs[34] = nucleoFreqs[2] * nucleoFreqs[0] * nucleoFreqs[2] / totalProb; // GAG
+    	codonFreqs[35] = nucleoFreqs[2] * nucleoFreqs[0] * nucleoFreqs[3] / totalProb; // GAT
+    	codonFreqs[36] = nucleoFreqs[2] * nucleoFreqs[1] * nucleoFreqs[0] / totalProb; // GCA
+    	codonFreqs[37] = nucleoFreqs[2] * nucleoFreqs[1] * nucleoFreqs[1] / totalProb; // GCC
+    	codonFreqs[38] = nucleoFreqs[2] * nucleoFreqs[1] * nucleoFreqs[2] / totalProb; // GCG
+    	codonFreqs[39] = nucleoFreqs[2] * nucleoFreqs[1] * nucleoFreqs[3] / totalProb; // GCT
+    	codonFreqs[40] = nucleoFreqs[2] * nucleoFreqs[2] * nucleoFreqs[0] / totalProb; // GGA
+    	codonFreqs[41] = nucleoFreqs[2] * nucleoFreqs[2] * nucleoFreqs[1] / totalProb; // GGC
+    	codonFreqs[42] = nucleoFreqs[2] * nucleoFreqs[2] * nucleoFreqs[2] / totalProb; // GGG
+    	codonFreqs[43] = nucleoFreqs[2] * nucleoFreqs[2] * nucleoFreqs[3] / totalProb; // GGT
+    	codonFreqs[44] = nucleoFreqs[2] * nucleoFreqs[3] * nucleoFreqs[0] / totalProb; // GTA
+    	codonFreqs[45] = nucleoFreqs[2] * nucleoFreqs[3] * nucleoFreqs[1] / totalProb; // GTC
+    	codonFreqs[46] = nucleoFreqs[2] * nucleoFreqs[3] * nucleoFreqs[2] / totalProb; // GTG
+    	codonFreqs[47] = nucleoFreqs[2] * nucleoFreqs[3] * nucleoFreqs[3] / totalProb; // GTT
+    	codonFreqs[48] = nucleoFreqs[3] * nucleoFreqs[0] * nucleoFreqs[1] / totalProb; // TAC
+    	codonFreqs[49] = nucleoFreqs[3] * nucleoFreqs[0] * nucleoFreqs[3] / totalProb; // TAT
+    	codonFreqs[50] = nucleoFreqs[3] * nucleoFreqs[1] * nucleoFreqs[0] / totalProb; // TCA
+    	codonFreqs[51] = nucleoFreqs[3] * nucleoFreqs[1] * nucleoFreqs[1] / totalProb; // TCC
+    	codonFreqs[52] = nucleoFreqs[3] * nucleoFreqs[1] * nucleoFreqs[2] / totalProb; // TCG
+    	codonFreqs[53] = nucleoFreqs[3] * nucleoFreqs[1] * nucleoFreqs[3] / totalProb; // TCT
+    	codonFreqs[54] = nucleoFreqs[3] * nucleoFreqs[2] * nucleoFreqs[1] / totalProb; // TGC
+    	codonFreqs[55] = nucleoFreqs[3] * nucleoFreqs[2] * nucleoFreqs[2] / totalProb; // TGG
+    	codonFreqs[56] = nucleoFreqs[3] * nucleoFreqs[2] * nucleoFreqs[3] / totalProb; // TGT
+    	codonFreqs[57] = nucleoFreqs[3] * nucleoFreqs[3] * nucleoFreqs[0] / totalProb; // TTA
+    	codonFreqs[58] = nucleoFreqs[3] * nucleoFreqs[3] * nucleoFreqs[1] / totalProb; // TTC
+    	codonFreqs[59] = nucleoFreqs[3] * nucleoFreqs[3] * nucleoFreqs[2] / totalProb; // TTG
+    	codonFreqs[60] = nucleoFreqs[3] * nucleoFreqs[3] * nucleoFreqs[3] / totalProb; // TTT
+    	
+        return codonFreqs;
+    }
+    
     /**
      * sets up rate matrix *
      */

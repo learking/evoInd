@@ -50,11 +50,11 @@
             </distribution>
        	</distribution>
        	
-       	<!--  
+       	
        	<operator id='kappaScaler' spec='ScaleOperator' scaleFactor="0.75" weight="0.1" parameter="@yn98.kappa"/>
         <operator id='frequenciesDelta' spec='DeltaExchangeOperator' delta="0.01" weight="0.1"
                 	parameter="@yn98.frequencies"/>	          	
-       	-->
+       	
        	
        	<logger logEvery="100000">
             <model idref='posterior'/>
