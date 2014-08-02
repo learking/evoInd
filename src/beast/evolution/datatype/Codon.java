@@ -13,10 +13,10 @@ public class Codon extends Base {
             mapCodeToStateSet[i][0] = i;
         }
 	}
-	
-    @Override
-    public String getDescription() {
-        return "codon";
-    }
+
+	@Override
+	public String getTypeDescription() {
+		return "codon";
+	}
 
 }

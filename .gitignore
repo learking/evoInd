@@ -54,4 +54,5 @@ build/**/*
 # Eclipse project file #
 ########################
 .project
-/bin
+bin/**/*
+.settings/*.*.*.*.prefs
