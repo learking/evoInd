@@ -1,7 +1,5 @@
 package beast.evolution.substitutionmodel;
 
-import java.util.Arrays;
-
 import beast.core.Input;
 import beast.core.Input.Validate;
 import beast.core.parameter.RealParameter;
@@ -493,6 +491,12 @@ public class OneStruct extends GeneralSubstitutionModel {
                 rateMatrix[i][j] = rateMatrix[i][j] / fSubst;
             }
         }
+    }
+    
+    @Override
+    public double[] getFrequencies() {
+    	double[] codonP = getCodonProb();
+    	return codonP;
     }
     
     @Override
