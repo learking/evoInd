@@ -1,0 +1,76 @@
+<beast version='2.0'
+       namespace='beast.evolution.alignment:beast.core:beast.evolution.tree.coalescent:beast.core.util:beast.evolution.nuc:beast.evolution.operators:beast.evolution.sitemodel:beast.evolution.substitutionmodel:beast.evolution.likelihood'>
+
+    <data id="alignment" dataType="codon">
+        <sequence taxon="human">
+		AGAAATATG		
+	    </sequence>
+        <sequence taxon="chimp">
+		AGAAATATG		
+		</sequence>
+        <sequence taxon="bonobo">
+		AGAAATATG		
+		</sequence>
+        <sequence taxon="gorilla">
+		AGAAATATG		
+		</sequence>
+        <sequence taxon="orangutan">
+		AGAAATATG		
+		</sequence>
+		<sequence taxon="siamang">
+		AGAAATACG		
+		</sequence>
+    </data>       
+    
+    <tree spec='beast.util.TreeParser' id='tree' taxa='@alignment'
+	        newick='((((1:0.024003,(2:0.010772,3:0.010772):0.013231):0.012035,4:0.036038):0.033087000000000005,5:0.069125):0.030456999999999998,6:0.099582);'/>
+    
+    <run spec="MCMC" id="mcmc" chainLength="3"> <!--autoOptimize="true"-->
+	 	<state>
+            <stateNode spec='parameter.RealParameter' id="oneStruct.kappa" value="2.0" lower="0.0"/>
+            <stateNode spec='parameter.RealParameter' id="oneStruct.omega" value="1.0" lower="0.0"/>
+            <stateNode spec='parameter.RealParameter' id="oneStruct.frequencies" value="0.25" dimension="4" lower='0.0'/>                    
+            <!-- 
+            <stateNode spec='parameter.RealParameter' id="oneStruct.frequencies" value="0.2 0.2 0.3 0.3" dimension="4" lower='0.0'/>  
+            -->
+	        <stateNode idref='tree'/>       
+       	</state>
+       	
+      	<distribution spec='CompoundDistribution' id='posterior'>
+
+			<distribution id="likelihood" spec="util.CompoundDistribution">
+				<!-- site1 TreeLikelihood -->
+            	<distribution spec='TreeLikelihood' id="treeLikelihood.site1" data='@alignment' tree='@tree'>
+                	<data data="@alignment" filter="1" id="site1data" spec="FilteredAlignment"/>
+                	<siteModel id="siteModel" spec='SiteModel'>
+    					<substModel spec='OneStruct' id='oneStruct'>
+        					<kappa idref='oneStruct.kappa'/>
+        					<omega idref='oneStruct.omega'/>
+        					<nucleoFrequencies id='freqs' spec='Frequencies' frequencies='@oneStruct.frequencies'/>   
+
+							<!-- need to add codonProb here -->
+							
+    					</substModel>
+                	</siteModel>
+            	</distribution>
+          	</distribution>
+       	</distribution>
+       	
+       	
+       	<operator id='kappaScaler' spec='ScaleOperator' scaleFactor="0.75" weight="0.1" parameter="@oneStruct.kappa"/>
+        <operator id='frequenciesDelta' spec='DeltaExchangeOperator' delta="0.01" weight="0.1"
+                	parameter="@oneStruct.frequencies"/>	          	
+       	
+       	
+       	<logger logEvery="100000">
+            <model idref='posterior'/>
+            <log idref="posterior"/>
+            <!-- <log idref="prior"/> -->
+            <log idref="oneStruct.kappa"/>
+            <log idref="oneStruct.omega"/>
+            <log idref="oneStruct.frequencies"/>
+            <log idref="likelihood"/>
+        </logger>
+    </run>
+    
+</beast>

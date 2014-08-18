@@ -1,5 +1,7 @@
 package beast.evolution.substitutionmodel;
 
+import java.util.Arrays;
+
 import beast.core.Input;
 import beast.core.Input.Validate;
 import beast.core.parameter.RealParameter;
@@ -55,7 +57,8 @@ public class OneStruct extends GeneralSubstitutionModel {
         {
         	totalCodonP = totalCodonP + codonProb[i];
         }
-        if (totalCodonP != 1.0) {
+        if (Math.abs(totalCodonP - 1.0) > 1e-4) {
+        	System.out.format("totalCodonP value is:" + "%f%n", totalCodonP); 
             throw new Exception("Codon probabilities should sum up to 1.");
         }
         
@@ -166,6 +169,13 @@ public class OneStruct extends GeneralSubstitutionModel {
     	for (int i = 0; i < pRatio.length; i++) {
     		pRatio[i] = codonP[i] / p0[i];
     	}
+    	
+    	//System.out.print("codonP:");
+    	//System.out.println(Arrays.toString(codonP));
+    	//System.out.print("p0:");
+    	//System.out.println(Arrays.toString(p0));
+    	//System.out.print("pRatio:");
+    	//System.out.println(Arrays.toString(pRatio));
     	
     	//construct symmetric codon substitution matrix (61X61):
     	//0: diagonal positions, codons differ at more than one position
@@ -442,6 +452,8 @@ public class OneStruct extends GeneralSubstitutionModel {
         	}
         }
         
+    	//System.out.print("symmM after setup:");
+        //System.out.println(Arrays.deepToString(symmMatrix));
     }
     
     @Override
